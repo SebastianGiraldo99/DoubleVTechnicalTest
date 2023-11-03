@@ -1,0 +1,103 @@
+<div class="contariner ">
+    <div class="row">
+        <div class="col">
+            <h1>Nueva Factura</h1>    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-success" (click)="limpiarPantalla()">Nuevo</button>
+        </div>
+    </div>
+
+    <form (ngSubmit)="agregarProducto()">
+        <div class="form-columns">
+            <div class="col-md-1 column">
+                <label for="optionsSelect">Seleccione un cliente:</label>
+                <select id="cliente" class="form-control" name="selectedCliente" [(ngModel)]="selectedCliente">
+                <option value="null">...</option>
+                <option *ngFor="let cliente of clientes" [value]="cliente.clienteId">{{cliente.nombreCliente}}</option>
+            </select>
+            </div>
+            <div class="column">
+                <label for="numeroFactura">Numero de factura: </label>
+                <input type="text" class="form-control" id="facturaId" name="numeroFactura"  [(ngModel)]="numeroFactura">
+            </div>
+            
+        </div>
+        <br>
+        <div class="column">
+            <button type="submit" class="btn btn-success">Agregar producto</button>
+        </div>
+        <br>
+        
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio Unitario</th>
+                <th>Cantidad</th>
+                <th>Imagen</th>
+                <th>Totales</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let producto of productos ; let i = index">
+                <td>
+                    <select id="products" (change)="addProductsToFact($event)" [(ngModel)]="producto.productId" class="form-control">
+                        <option value="null">Selecione un producto</option>
+                        <option *ngFor="let product of productsFac" [value]="product.productId">{{product.nombreProducto}}</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text"  class="form-control" [value]="producto.precioUnitario == undefined ? '' : producto.precioUnitario" disabled="true">
+                    
+                </td>
+                <td>
+                    <input type="text" class="form-control" id="cantidad" [(ngModel)]="producto.cantidad" (input)="actualizarTotal(producto)">
+                </td>
+                <td>
+                    <img [src]="producto.imagenPrducto" alt="Imagen" width="100" height="100" class="rounded-circle">
+                </td>
+                <td>
+                    <input type="text" class="form-control" [(value)]="producto.total" disabled="true">
+                </td>
+                <td>
+                    <button class="btn btn-danger" (click)="quitarProduct(i)">Quitar producto</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table table-bordered">
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>SubTotal</td>
+                            <td><input type="text" class="form-control" [value]="subtotal" disabled="true"></td>
+                        </tr>
+                        <tr>
+                            <td>Impuestos(19%)</td>
+                            <td><input type="text" class="form-control" [value]="impuesto"  disabled="true"></td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td><input type="text" class="form-control" [value]="total"  disabled="true"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+        <button class="btn btn-success" (click)="saveFactura()" [disabled]="disbutton">Guardar</button>
+        <p>{{restrictivoMensaje}}</p>
+</div>
+
+

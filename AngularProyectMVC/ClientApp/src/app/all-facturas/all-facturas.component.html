@@ -1,0 +1,57 @@
+<div class="contariner ">
+    <div class="row">
+        <div class="col">
+            <h1>Nueva Factura</h1>    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Tipo de busqueda
+        </div>
+        <div class="col">
+            <label>
+                <input type="radio" name="tipoBusqueda" [(ngModel)]="seleccion" value="client" (change)="opcionSeleccionada('client')"> Cliente
+            </label>
+        </div>
+        <div class="col">
+            <label>
+                <input type="radio" name="tipoBusqueda" [(ngModel)]="seleccion" value="bill" (change)="opcionSeleccionada('bill')"> Factura
+            </label>
+        </div>
+    </div>
+    <form (ngSubmit)="buscarFactura()">
+        <div class="form-columns">
+            <div class="column">
+                <label for="optionsSelect">Seleccione un cliente:</label>
+                <select id="cliente" class="form-control" name="selectedCliente" [(ngModel)]="selectedCliente"[disabled]="boolClient">
+                <option value="null">...</option>
+                <option *ngFor="let cliente of clientes" [value]="cliente.clienteId">{{cliente.nombreCliente}}</option>
+            </select>
+            </div>
+            <div class="column">
+                <label for="numeroFactura">Numero de factura: </label>
+                <input type="text" class="form-control" id="facturaId" name="numeroFactura" [disabled]="boolBill"  [(ngModel)]="numeroFactura">
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-success">Buscar</button>
+        <p>{{restrictivoMensaje}}</p>
+    </form>
+    <br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Numero de Factura</th>
+                <th>Fecha de emision</th>
+                <th>Total Facturado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let elemento of facturaRespuesta">
+                <td>{{ elemento.numeroFactura }}</td>
+                <td>{{ elemento.fechaEmisionFactura |  date: 'dd/MM/yyyy ' }}</td>
+                <td>${{elemento.totalFactura}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>  
